@@ -5,7 +5,7 @@ type User {
 }
 
 type Query {
-  currentUser: User!
+  currentUser: User
 }
 
 type Mutation {

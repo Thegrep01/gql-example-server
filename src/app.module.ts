@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
+      context: ({ req }) => ({ req }),
     }),
   ],
 })
