@@ -1,0 +1,28 @@
+type User {
+  id: ID!
+  login: String!
+  accessToken: String
+}
+
+type Query {
+  currentUser: User!
+}
+
+type Mutation {
+  auth: AuthMutations
+}
+type AuthMutations {
+  signUp(user: AuthInput): SignUpResponse!
+  signIn(user: AuthInput): SignUpResponse!
+}
+
+input AuthInput {
+  login: String!
+  password: String!
+}
+
+type SignUpResponse {
+  recordId: ID
+  record: User
+  error: String
+}

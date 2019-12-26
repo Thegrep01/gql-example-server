@@ -25,6 +25,7 @@
     "@nestjs/graphql": "^6.5.3",
     "@nestjs/platform-express": "^6.0.0",
     "apollo-server-express": "^2.9.14",
+    "bcrypt": "^3.0.7",
     "faker": "^4.1.0",
     "graphql": "^14.5.8",
     "graphql-tools": "^4.0.6",
