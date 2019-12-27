@@ -2,6 +2,7 @@ type User {
   id: ID!
   login: String!
   accessToken: String
+  jokes: [Joke]
 }
 
 type Query {

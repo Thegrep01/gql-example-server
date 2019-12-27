@@ -55,4 +55,5 @@ export class User {
     id: string;
     login: string;
     accessToken?: string;
+    jokes?: Joke[];
 }

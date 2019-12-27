@@ -9,7 +9,7 @@ import { JokesModule } from './jokes/jokes.module';
     JokesModule,
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
-      context: ({ req }) => ({ req }),
+      context: ({ req }) => ({ req, dataloaders: new WeakMap() }),
     }),
   ],
 })

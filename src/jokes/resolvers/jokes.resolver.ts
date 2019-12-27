@@ -1,3 +1,4 @@
+import { UserService } from './../../user/service/user.service';
 import { GqlAuthGuard, CurrentUser } from './../../common/gqlAuth';
 import {
   Resolver,
@@ -24,7 +25,10 @@ export class JokesResolver {
 @Resolver(_of => JokesMutations)
 @UseGuards(GqlAuthGuard)
 export class JokesMutationResolver {
-  public constructor(private readonly jokesService: JokesService) {}
+  public constructor(
+    private readonly jokesService: JokesService,
+    private readonly userService: UserService,
+  ) {}
 
   @Mutation(_returns => JokesMutations)
   public async jokes() {
@@ -37,7 +41,8 @@ export class JokesMutationResolver {
     @CurrentUser() login,
   ): Promise<JokeResponse> {
     try {
-      return await this.jokesService.createJoke(joke, login);
+      const { id } = await this.userService.getUserByLogin(login, ['id']);
+      return await this.jokesService.createJoke(joke, id);
     } catch (error) {
       return {
         error,

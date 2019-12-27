@@ -1,23 +1,16 @@
-import { UserService } from './../../user/service/user.service';
 import { Joke, JokeResponse } from './../../graphql.schema';
 import knex from '../../common/db';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class JokesService {
-  public constructor(private readonly userService: UserService) {}
-
   public async getAllJokes(): Promise<Joke[]> {
     return await knex('jokes').select();
   }
-  public async createJoke(
-    joke: string,
-    userLogin: string,
-  ): Promise<JokeResponse> {
-    const { id } = await this.userService.getUserByLogin(userLogin, ['id']);
+  public async createJoke(joke: string, userId: string): Promise<JokeResponse> {
     const jokeId = await knex('jokes').insert({
       joke,
-      user_id: id,
+      user_id: userId,
     });
     const newJoke = await this.getJokeById(jokeId[0], [
       'id',
@@ -36,5 +29,10 @@ export class JokesService {
       .select(projection)
       .where('id', id)
       .first();
+  }
+  public async getJokesByUser(id: number, projection: string[] = []) {
+    return await knex('jokes')
+      .select(projection)
+      .where('user_id', id);
   }
 }
