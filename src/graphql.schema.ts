@@ -18,8 +18,6 @@ export class AuthMutations {
 export class Joke {
     id: string;
     joke: string;
-    likes?: number;
-    dislikes?: number;
     author?: User;
 }
 

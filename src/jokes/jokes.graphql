@@ -1,8 +1,6 @@
 type Joke {
   id: ID!
   joke: String!
-  likes: Int
-  dislikes: Int
   author: User
 }
 
