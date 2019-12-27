@@ -35,4 +35,12 @@ export class JokesService {
       .select(projection)
       .where('user_id', id);
   }
+  public async getUserByJoke(id: number, projection: string[] = []) {
+    return await knex('jokes')
+      .select(projection)
+      .innerJoin('users', 'users.id', 'jokes.user_id')
+      .groupBy('jokes.id')
+      .having('jokes.id', '=', id)
+      .first();
+  }
 }

@@ -27,7 +27,7 @@ export class UserResolver {
   }
 
   @ResolveProperty(_returns => [Joke])
-  public async jokes(@Parent() { id }, @Context() context, @Info() info) {
+  public async jokes(@Parent() { id }) {
     return await this.jokesService.getJokesByUser(id);
   }
 }

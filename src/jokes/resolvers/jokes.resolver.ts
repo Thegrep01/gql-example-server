@@ -6,20 +6,52 @@ import {
   Mutation,
   ResolveProperty,
   Args,
+  Parent,
+  Context,
+  Info,
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { Joke, JokesMutations, JokeResponse } from './../../graphql.schema';
+import {
+  Joke,
+  JokesMutations,
+  JokeResponse,
+  User,
+} from './../../graphql.schema';
 import { JokesService } from '../service/jokes.service';
+import DataLoader = require('dataloader');
 
 @Resolver(_of => Joke)
 @UseGuards(GqlAuthGuard)
 export class JokesResolver {
-  public constructor(private readonly jokesService: JokesService) {}
+  public constructor(
+    private readonly jokesService: JokesService,
+    private readonly userService: UserService,
+  ) {}
 
   @Query(_returns => [Joke])
   public async allJokes(): Promise<Joke[]> {
     return await this.jokesService.getAllJokes();
+  }
+
+  @ResolveProperty(_returns => User)
+  public async author(@Parent() root, @Context() context, @Info() info) {
+    const { dataloaders } = context;
+
+    let dl = dataloaders.get(info.fieldNodes);
+    if (!root.user_id) {
+      return await this.jokesService.getUserByJoke(root.id, [
+        'users.login',
+        'users.id',
+      ]);
+    }
+    if (!dl) {
+      dl = new DataLoader(async (ids: any) => {
+        return await this.userService.getUsersByIds(ids);
+      });
+      dataloaders.set(info.fieldNodes, dl);
+    }
+    return dl.load(root.user_id);
   }
 }
 @Resolver(_of => JokesMutations)

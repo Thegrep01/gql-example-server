@@ -20,7 +20,7 @@ export class Joke {
     joke: string;
     likes?: number;
     dislikes?: number;
-    user?: User;
+    author?: User;
 }
 
 export class JokeResponse {

@@ -51,4 +51,9 @@ export class UserService {
       .where('login', query)
       .first();
   }
+  public async getUsersByIds(query: number[], projection: string[] = []) {
+    return await knex('users')
+      .select(projection)
+      .whereIn('id', query);
+  }
 }
