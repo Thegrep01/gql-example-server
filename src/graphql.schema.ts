@@ -30,7 +30,7 @@ export class JokeResponse {
 }
 
 export class JokesMutations {
-    createJoke?: JokeResponse;
+    createJoke: JokeResponse;
 }
 
 export abstract class IMutation {

@@ -1,3 +1,3 @@
-import { JokesResolver } from './jokes.resolver';
+import { JokesResolver, JokesMutationResolver } from './jokes.resolver';
 
-export const resolvers: any[] = [JokesResolver];
+export const resolvers: any[] = [JokesResolver, JokesMutationResolver];
