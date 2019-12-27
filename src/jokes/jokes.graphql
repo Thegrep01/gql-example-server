@@ -9,3 +9,17 @@ type Joke {
 type Query {
   allJokes: [Joke!]!
 }
+
+type Mutation {
+  jokes: JokesMutations
+}
+
+type JokesMutations {
+  createJoke(joke: String!): JokeResponse
+}
+
+type JokeResponse {
+  recordId: ID
+  record: Joke
+  error: String
+}

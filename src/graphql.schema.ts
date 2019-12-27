@@ -23,7 +23,19 @@ export class Joke {
     user?: User;
 }
 
+export class JokeResponse {
+    recordId?: string;
+    record?: Joke;
+    error?: string;
+}
+
+export class JokesMutations {
+    createJoke?: JokeResponse;
+}
+
 export abstract class IMutation {
+    abstract jokes(): JokesMutations | Promise<JokesMutations>;
+
     abstract auth(): AuthMutations | Promise<AuthMutations>;
 }
 
