@@ -15,11 +15,21 @@ export class AuthMutations {
     signIn: SignUpResponse;
 }
 
+export class Joke {
+    id: string;
+    joke: string;
+    likes?: number;
+    dislikes?: number;
+    user?: User;
+}
+
 export abstract class IMutation {
     abstract auth(): AuthMutations | Promise<AuthMutations>;
 }
 
 export abstract class IQuery {
+    abstract allJokes(): Joke[] | Promise<Joke[]>;
+
     abstract currentUser(): User | Promise<User>;
 }
 

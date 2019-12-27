@@ -1,0 +1,11 @@
+type Joke {
+  id: ID!
+  joke: String!
+  likes: Int
+  dislikes: Int
+  user: User
+}
+
+type Query {
+  allJokes: [Joke!]!
+}
