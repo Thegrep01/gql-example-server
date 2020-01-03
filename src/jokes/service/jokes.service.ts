@@ -5,19 +5,17 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class JokesService {
   public async getAllJokes(): Promise<Joke[]> {
-    return await knex('jokes').select();
+    return await knex('jokes')
+      .select()
+      .orderBy('created_at', 'desc');
   }
   public async createJoke(joke: string, userId: string): Promise<JokeResponse> {
     const jokeId = await knex('jokes').insert({
       joke,
       user_id: userId,
+      created_at: new Date().toISOString(),
     });
-    const newJoke = await this.getJokeById(jokeId[0], [
-      'id',
-      'joke',
-      'likes',
-      'dislikes',
-    ]);
+    const newJoke = await this.getJokeById(jokeId[0], ['id', 'joke']);
     return {
       recordId: jokeId[0].toString(),
       record: newJoke,
