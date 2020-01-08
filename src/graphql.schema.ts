@@ -31,14 +31,25 @@ export class JokesMutations {
     createJoke: JokeResponse;
 }
 
+export class JokesPagination {
+    items: Joke[];
+    pageInfo: PaginationInfo;
+}
+
 export abstract class IMutation {
     abstract jokes(): JokesMutations | Promise<JokesMutations>;
 
     abstract auth(): AuthMutations | Promise<AuthMutations>;
 }
 
+export class PaginationInfo {
+    totalItems: number;
+    page: number;
+    perPage: number;
+}
+
 export abstract class IQuery {
-    abstract allJokes(): Joke[] | Promise<Joke[]>;
+    abstract allJokes(page?: number, perPage?: number): JokesPagination | Promise<JokesPagination>;
 
     abstract currentUser(): User | Promise<User>;
 }

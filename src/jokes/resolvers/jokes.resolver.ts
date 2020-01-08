@@ -17,6 +17,7 @@ import {
   JokesMutations,
   JokeResponse,
   User,
+  JokesPagination,
 } from './../../graphql.schema';
 import { JokesService } from '../service/jokes.service';
 import DataLoader = require('dataloader');
@@ -29,9 +30,22 @@ export class JokesResolver {
     private readonly userService: UserService,
   ) {}
 
-  @Query(_returns => [Joke])
-  public async allJokes(): Promise<Joke[]> {
-    return await this.jokesService.getAllJokes();
+  @Query(_returns => JokesPagination)
+  public async allJokes(
+    @Args('page') page: number,
+    @Args('perPage') perPage: number,
+  ): Promise<JokesPagination> {
+    const items = await this.jokesService.getAllJokes(page, perPage);
+    const totalItems = await this.jokesService.getTotalCount();
+    console.log();
+    return {
+      items,
+      pageInfo: {
+        page,
+        perPage,
+        totalItems: totalItems[0]['count(`id`)'],
+      },
+    };
   }
 
   @ResolveProperty(_returns => User)
@@ -77,7 +91,7 @@ export class JokesMutationResolver {
       return await this.jokesService.createJoke(joke, id);
     } catch (error) {
       return {
-        error,
+        error: '400',
       };
     }
   }

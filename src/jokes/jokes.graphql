@@ -5,7 +5,7 @@ type Joke {
 }
 
 type Query {
-  allJokes: [Joke!]!
+  allJokes(page: Int = 1, perPage: Int = 20): JokesPagination!
 }
 
 type Mutation {
@@ -20,4 +20,18 @@ type JokeResponse {
   recordId: ID
   record: Joke
   error: String
+}
+
+type JokesPagination {
+  # Array of objects.
+  items: [Joke]!
+
+  # Information to aid in pagination.
+  pageInfo: PaginationInfo!
+}
+
+type PaginationInfo {
+  totalItems: Int!
+  page: Int!
+  perPage: Int!
 }

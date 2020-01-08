@@ -4,11 +4,17 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class JokesService {
-  public async getAllJokes(): Promise<Joke[]> {
+  public async getAllJokes(page: number, perPage: number): Promise<Joke[]> {
     return await knex('jokes')
       .select()
+      .limit(perPage)
+      .offset((page - 1) * perPage)
       .orderBy('created_at', 'desc');
   }
+  public async getTotalCount(): Promise<number> {
+    return await knex('jokes').count('id');
+  }
+
   public async createJoke(joke: string, userId: string): Promise<JokeResponse> {
     const jokeId = await knex('jokes').insert({
       joke,
