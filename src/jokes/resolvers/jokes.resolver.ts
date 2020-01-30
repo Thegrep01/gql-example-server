@@ -50,6 +50,7 @@ export class JokesResolver {
 
   @ResolveProperty(_returns => User)
   public async author(@Parent() root, @Context() context, @Info() info) {
+    console.log(root);
     const { dataloaders } = context;
 
     let dl = dataloaders.get(info.fieldNodes);
@@ -61,7 +62,8 @@ export class JokesResolver {
     }
     if (!dl) {
       dl = new DataLoader(async (ids: any) => {
-        return await this.userService.getUsersByIds(ids);
+        const rows = await this.userService.getUsersByIds(ids);
+        return ids.map(id => rows.find(x => x.id === id));
       });
       dataloaders.set(info.fieldNodes, dl);
     }
